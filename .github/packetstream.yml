@@ -1,0 +1,26 @@
+name: PacketStream Earning Bot
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # سيعمل تلقائياً كل 6 ساعات لضمان استمرار الربح
+  workflow_dispatch: # يسمح لك بتشغيله يدوياً في أي وقت
+
+jobs:
+  earn:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start PacketStream Node
+        run: |
+          # تشغيل الحاوية الرسمية باستخدام الـ CID الخاص بك
+          docker run -d \
+            --name psclient \
+            -e CID=7x2D \
+            packetstream/psclient:latest
+          
+          # نترك البوت يعمل لمدة 5 ساعات ونصف (19800 ثانية)
+          # GitHub Actions لديه حد أقصى 6 ساعات للجلسة الواحدة
+          sleep 19800
+          
+          # إيقاف الحاوية قبل نهاية الجلسة لتنظيف الموارد
+          docker stop psclient
+
