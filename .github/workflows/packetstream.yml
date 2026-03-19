@@ -1,26 +1,25 @@
-name: PacketStream Earning Bot
+name: TraffMonetizer Earning Bot
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # سيعمل تلقائياً كل 6 ساعات لضمان استمرار الربح
+    - cron: '0 */6 * * *' # يعمل تلقائياً كل 6 ساعات لضمان استمرار الاتصال
   workflow_dispatch: # يسمح لك بتشغيله يدوياً في أي وقت
 
 jobs:
   earn:
     runs-on: ubuntu-latest
     steps:
-      - name: Start PacketStream Node
+      - name: Start TraffMonetizer Node
         run: |
-          # تشغيل الحاوية الرسمية باستخدام الـ CID الخاص بك
+          # تشغيل الحاوية الرسمية باستخدام التوكن الخاص بك
           docker run -d \
-            --name psclient \
-            -e CID=7x2D \
-            packetstream/psclient:latest
+            --name tm \
+            traffmonetizer/cli_v2 start accept \
+            --token "Dl1mPKsVcHRWq9OzqWjQWwtvdP9Hr4EwFgkcIi2Ng+8="
           
-          # نترك البوت يعمل لمدة 5 ساعات ونصف (19800 ثانية)
-          # GitHub Actions لديه حد أقصى 6 ساعات للجلسة الواحدة
+          # نترك السيرفر يعمل لمدة 5 ساعات ونصف (19800 ثانية)
+          # GitHub يسمح بحد أقصى 6 ساعات لكل جلسة عمل
           sleep 19800
           
           # إيقاف الحاوية قبل نهاية الجلسة لتنظيف الموارد
-          docker stop psclient
-
+          docker stop tm
